@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.weather.adapter.CityAdapter;
+import com.app.weather.data.DatabaseHelper;
 import com.app.weatherapp.R;
 
 /**
  * Created by Sarah on 6/22/17.
  */
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
+
+    private DatabaseHelper database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,9 +30,9 @@ public class HomeFragment extends Fragment{
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(myDataset);
+        database = DatabaseHelper.getInstance(getContext());
+        CityAdapter mAdapter = new CityAdapter(getContext(),database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
-    }
+}
