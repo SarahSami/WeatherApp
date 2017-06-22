@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">WeatherMap</string>
+
+    <string name="app_name">Weather</string>
+    <string name="add_city">Add City</string>
+    <string name="delete_city">Delete city</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="no_location_found">Sorry, no location found</string>
+    <string name="open_weather_map_id">c6e381d8c7ff98f0fee43775817cf6ad</string>
+    <string name="google_maps_api_key">AIzaSyCqRRgYesnL7FLNpOyidATpWNCi6ov-CMg</string>
+
+
 </resources>
