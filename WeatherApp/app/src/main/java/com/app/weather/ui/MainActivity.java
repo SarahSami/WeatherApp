@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.app.weather.adapter.CityAdapter;
 import com.app.weather.data.DatabaseHelper;
@@ -68,13 +66,6 @@ public class MainActivity extends FragmentActivity {
                     .commit();
         }
         return false;
-    }
-
-    public void addCity(View v) {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, new MapFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
     }
 
     @Override

@@ -9,8 +9,9 @@ import org.json.JSONObject;
 public class Forecast {
 
     private String main, description, icon, rainingStatus;
-    private double temp, humidity, windSpeed, windDegree;
+    private double temp, windSpeed, windDegree;
     private long sunrise, sunset;
+    private int humidity;
 
     public String getMain() {
         return main;
@@ -56,7 +57,7 @@ public class Forecast {
         return humidity;
     }
 
-    public void setHumidity(double humidity) {
+    public void setHumidity(int humidity) {
         this.humidity = humidity;
     }
 
@@ -102,7 +103,7 @@ public class Forecast {
             this.icon = weather.getString("icon");
 
             this.temp = main.getDouble("temp");
-            this.humidity = main.getDouble("humidity");
+            this.humidity = main.getInt("humidity");
 
             this.windSpeed = object.getJSONObject("wind").getDouble("speed");
             this.windDegree = object.getJSONObject("wind").getDouble("deg");

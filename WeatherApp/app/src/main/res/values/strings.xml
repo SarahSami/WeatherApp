@@ -5,6 +5,8 @@
     <string name="delete_city">Delete city</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
     <string name="please_wait">Please wait</string>
     <string name="problem_internet_connection">There is a problem in Internet Connection</string>
     <string name="no_location_found">Sorry, no location found</string>

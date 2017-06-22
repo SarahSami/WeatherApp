@@ -1,7 +1,9 @@
 package com.app.weather.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +35,18 @@ public class HomeFragment extends Fragment {
         database = DatabaseHelper.getInstance(getContext());
         CityAdapter mAdapter = new CityAdapter(getContext(),database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
+
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, new MapFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
+
         return v;
     }
 }

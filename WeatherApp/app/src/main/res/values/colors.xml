@@ -3,5 +3,9 @@
     <color name="colorPrimary">#A87DC4</color>
     <color name="colorPrimaryDark">#A87DC4</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="card_bg">#f2f2f2</color>
+    <color name="dark_grey">#9F9F9F</color>
+    <color name="light_grey">#e3e3e3</color>
+    <color name="fab_color">#FF4081</color>
 </resources>

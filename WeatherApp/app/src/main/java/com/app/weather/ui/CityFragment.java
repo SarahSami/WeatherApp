@@ -27,7 +27,7 @@ public class CityFragment extends Fragment {
     private City city;
     private Forecast forecast;
     private APIClient apiClient;
-    private TextView cityNameTextView,tempTextView,descriptionTextView;
+    private TextView cityNameTextView, tempTextView, descriptionTextView, humidityTextView, windTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +41,8 @@ public class CityFragment extends Fragment {
         cityNameTextView = (TextView) v.findViewById(R.id.city_name);
         tempTextView = (TextView) v.findViewById(R.id.temp);
         descriptionTextView = (TextView) v.findViewById(R.id.description);
+        humidityTextView = (TextView) v.findViewById(R.id.humidity);
+        windTextView = (TextView) v.findViewById(R.id.wind);
 
         loadWeatherData();
         return v;
@@ -48,8 +50,10 @@ public class CityFragment extends Fragment {
 
     private void setUIValues() {
         cityNameTextView.setText(city.getName());
-        tempTextView.setText(forecast.getTemp()+"˚C");
+        tempTextView.setText(forecast.getTemp() + "˚C");
         descriptionTextView.setText(forecast.getDescription());
+        humidityTextView.setText(forecast.getHumidity()+"%");
+        windTextView.setText(forecast.getWindSpeed()+"m/s");
     }
 
     private void loadWeatherData() {
