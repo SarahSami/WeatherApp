@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.weather.adapter.ForecastAdapter;
 import com.app.weather.api.APIClient;
 import com.app.weather.models.City;
 import com.app.weather.models.Forecast;
@@ -36,7 +40,8 @@ public class CityFragment extends Fragment {
     private List<Forecast> forecastList;
     private APIClient apiClient;
     private ImageView iconView;
-    private TextView cityNameTextView,countryTextView, tempTextView, descriptionTextView, humidityTextView, windTextView;
+    private RecyclerView mRecyclerView;
+    private TextView cityNameTextView, countryTextView, tempTextView, descriptionTextView, humidityTextView, windTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +59,7 @@ public class CityFragment extends Fragment {
         humidityTextView = (TextView) v.findViewById(R.id.humidity);
         windTextView = (TextView) v.findViewById(R.id.wind);
         iconView = (ImageView) v.findViewById(R.id.icon);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         forecastList = new ArrayList<>();
         loadWeatherData();
         loadNextDaysWeatherData();
@@ -126,15 +132,17 @@ public class CityFragment extends Fragment {
             @Override
             protected void onPostExecute(Void result) {
                 if (response != null) {
-                    for(int i=0;i<response.length();i++){
+                    for (int i = 11; i < response.length(); i = i + 8) {
                         Forecast forecast = new Forecast();
                         try {
                             forecast.parseJSONObject(response.getJSONObject(i));
+                            Log.d("date", "..." + forecast.getDate());
+                            forecastList.add(forecast);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                    forecastList.add(forecast);
+                    loadForecastData();
                 } else {
                     Toast.makeText(getContext(), getString(R.string.problem_internet_connection), Toast.LENGTH_SHORT).show();
                 }
@@ -142,5 +150,13 @@ public class CityFragment extends Fragment {
 
         };
         task.execute((Void[]) null);
+    }
+
+    private void loadForecastData() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        ForecastAdapter adapter = new ForecastAdapter(getContext(), forecastList);
+        mRecyclerView.setAdapter(adapter);
     }
 }
