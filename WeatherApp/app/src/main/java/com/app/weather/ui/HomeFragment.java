@@ -40,8 +40,10 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MapFragment fragment = new MapFragment();
                 getFragmentManager().beginTransaction()
-                        .add(R.id.container, new MapFragment())
+                        .add(R.id.container, fragment)
+                        .addToBackStack(fragment.getClass().getName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }

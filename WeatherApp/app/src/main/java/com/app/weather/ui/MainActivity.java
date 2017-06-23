@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.app.weather.adapter.CityAdapter;
 import com.app.weather.data.DatabaseHelper;
@@ -43,9 +43,12 @@ public class MainActivity extends FragmentActivity {
 
 
         if (savedInstanceState == null) {
+            HomeFragment fragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new HomeFragment())
+                    .addToBackStack(fragment.getClass().getName())
+                    .add(R.id.container, fragment)
                     .commit();
+
         }
     }
 
@@ -58,15 +61,6 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add_city) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MapFragment())
-                    .commit();
-        }
-        return false;
-    }
 
     @Override
     public void onResume() {
@@ -82,12 +76,25 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        Log.d("count", "..." + count);
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
+
     public class SelectCityBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             CityFragment fragment = new CityFragment();
             fragment.setArguments(intent.getExtras());
             getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(fragment.getClass().getName())
                     .add(R.id.container, fragment)
                     .commit();
         }

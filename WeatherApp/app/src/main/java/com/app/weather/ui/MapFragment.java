@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +109,6 @@ public class MapFragment extends Fragment {
                     city.setName(address.getLocality());
                     DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
                     db.addCity(city);
-                    Log.d("city and country", city.getName() + " " + city.getCountry());
                     Toast.makeText(getActivity(), city.getName() + "," + city.getCountry() + " added", Toast.LENGTH_SHORT).show();
                     finishFragment();
                 }
