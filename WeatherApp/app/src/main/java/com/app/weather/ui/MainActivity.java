@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.app.weather.adapter.CityAdapter;
 import com.app.weather.data.DatabaseHelper;
@@ -59,6 +60,25 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.help:
+                help();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void help(){
+        HelpFragment fragment = new HelpFragment();
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(fragment.getClass().getName())
+                .add(R.id.container, fragment)
+                .commit();
     }
 
 
