@@ -1,5 +1,6 @@
 package com.app.weather.ui;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -106,10 +107,18 @@ public class MapFragment extends Fragment {
                 if (addresses.size() > 0) {
                     Address address = addresses.get(0);
                     city.setCountry(address.getCountryName());
-                    city.setName(address.getLocality());
+                    String cityName = address.getLocality();
+                    if (cityName == null)
+                        cityName = address.getAdminArea();
+                    if (cityName == null)
+                        cityName = address.getSubLocality();
+                    city.setName(cityName);
                     DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
                     db.addCity(city);
                     Toast.makeText(getActivity(), city.getName() + "," + city.getCountry() + " added", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION);
+                    getContext().sendBroadcast(intent);
+
                     finishFragment();
                 }
             } catch (IOException e) {

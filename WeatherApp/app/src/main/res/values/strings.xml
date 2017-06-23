@@ -2,7 +2,9 @@
 
     <string name="app_name">Weather</string>
     <string name="add_city">Add City</string>
-    <string name="delete_city">Delete city</string>
+    <string name="delete_city">Are you sure you want to delete this city?</string>
+    <string name="yes">Yes</string>
+    <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="humidity">Humidity</string>

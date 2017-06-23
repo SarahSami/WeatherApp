@@ -158,10 +158,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void removeCity(int cityId) {
+    public void removeCity(String cityName) {
         SQLiteDatabase db;
         db = this.getWritableDatabase();
-        db.delete("CitiesTBL", "Id = " + cityId, null);
+        db.delete("CitiesTBL", "Name='" + cityName+"'", null);
         db.close();
     }
 

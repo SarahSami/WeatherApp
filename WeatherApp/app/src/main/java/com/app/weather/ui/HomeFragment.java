@@ -1,5 +1,9 @@
 package com.app.weather.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,6 +24,10 @@ import com.app.weatherapp.R;
 public class HomeFragment extends Fragment {
 
     private DatabaseHelper database;
+    private CityAdapter mAdapter;
+    private  RecyclerView mRecyclerView;
+    private UpdateCitiesListBroadcastReceiver updateCitiesListBroadcastReceiver;
+    public static final String UPDATE_CITIES_LIST_INTENT_ACTION = "update.cities.list.action";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,12 +36,12 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container,
                 false);
 
-        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         database = DatabaseHelper.getInstance(getContext());
-        CityAdapter mAdapter = new CityAdapter(getContext(),database.getAllCities());
+        mAdapter = new CityAdapter(getContext(), database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
@@ -50,5 +58,32 @@ public class HomeFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void updateCities(){
+        mAdapter = new CityAdapter(getContext(), database.getAllCities());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateCitiesListBroadcastReceiver = new UpdateCitiesListBroadcastReceiver();
+        getActivity().registerReceiver(updateCitiesListBroadcastReceiver, new IntentFilter(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(updateCitiesListBroadcastReceiver);
+    }
+
+
+    public class UpdateCitiesListBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateCities();
+        }
+
     }
 }

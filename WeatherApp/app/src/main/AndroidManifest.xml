@@ -24,6 +24,7 @@
         </activity>
 
         <receiver android:name="com.app.weather.ui.MainActivity$SelectCityBroadcastReceiver" />
+        <receiver android:name="com.app.weather.ui.HomeFragment$UpdateCitiesListBroadcastReceiver" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

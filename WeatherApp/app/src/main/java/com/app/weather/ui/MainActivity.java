@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Created by Sarah on 6/22/17.
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     private SelectCityBroadcastReceiver selectCityBroadcastReceiver;
 
@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
         Log.d("count", "..." + count);
-        if (count == 0) {
+        if (count <= 1) {
             super.onBackPressed();
         } else {
             getSupportFragmentManager().popBackStack();
