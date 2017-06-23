@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.app.weatherapp.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,10 +26,28 @@ public class APIClient {
         this.context = context;
     }
 
-    public JSONObject getJSONObject(double lat, double lng) {
+    public JSONObject getWeatherData(double lat, double lng) {
+        String url = APIUrl.CITY_WEATHER_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng;
+        return getJSONObject(url);
+    }
+
+    public JSONArray getNextDaysWeatherData(double lat, double lng) {
+        String url = APIUrl.CITY_FORECAST_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng;
+        JSONObject jsonObject = getJSONObject(url);
+        if (jsonObject != null) {
+            try {
+                return jsonObject.getJSONArray("list");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private JSONObject getJSONObject(String baseUrl) {
         try {
-            URL url = new URL(APIUrl.CITY_WEATHER_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng);
-            Log.d("url is",".."+url.toString());
+            URL url = new URL(baseUrl);
+            Log.d("url is", ".." + url.toString());
             HttpURLConnection connection =
                     (HttpURLConnection) url.openConnection();
 

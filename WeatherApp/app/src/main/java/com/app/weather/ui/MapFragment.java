@@ -109,9 +109,7 @@ public class MapFragment extends Fragment {
                     city.setCountry(address.getCountryName());
                     String cityName = address.getLocality();
                     if (cityName == null)
-                        cityName = address.getAdminArea();
-                    if (cityName == null)
-                        cityName = address.getSubLocality();
+                        cityName = address.getCountryName();
                     city.setName(cityName);
                     DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
                     db.addCity(city);

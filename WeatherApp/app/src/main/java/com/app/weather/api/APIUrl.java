@@ -8,4 +8,6 @@ public class APIUrl {
     public static String BASE_URL = "http://api.openweathermap.org/";
     public static String ICON_URL = "http://openweathermap.org/img/w/";
     public static String CITY_WEATHER_URL = BASE_URL + "data/2.5/weather?units=metric&appid=";
+    public static String CITY_FORECAST_URL = BASE_URL + "data/2.5/forecast?units=metric&appid=";
+
 }

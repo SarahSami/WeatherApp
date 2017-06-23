@@ -8,8 +8,8 @@ import org.json.JSONObject;
  */
 public class Forecast {
 
-    private String main, description, icon, rainingStatus;
-    private double temp, windSpeed, windDegree;
+    private String main, description, icon, date;
+    private double temp, windSpeed, windDegree, rainVolume;
     private long sunrise, sunset;
     private int humidity;
 
@@ -35,14 +35,6 @@ public class Forecast {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getRainingStatus() {
-        return rainingStatus;
-    }
-
-    public void setRainingStatus(String rainingStatus) {
-        this.rainingStatus = rainingStatus;
     }
 
     public double getTemp() {
@@ -93,7 +85,15 @@ public class Forecast {
         this.sunset = sunset;
     }
 
-    public void parseJSONObject(JSONObject object){
+    public double getRainVolume() {
+        return rainVolume;
+    }
+
+    public void setRainVolume(double rainVolume) {
+        this.rainVolume = rainVolume;
+    }
+
+    public void parseJSONObject(JSONObject object) {
         try {
             JSONObject weather = object.getJSONArray("weather").getJSONObject(0);
             JSONObject main = object.getJSONObject("main");
@@ -114,5 +114,21 @@ public class Forecast {
 
         } catch (JSONException e) {
         }
+
+        this.date = object.optString("dt_txt");
+        try {
+            this.rainVolume = object.getJSONObject("rain").getDouble("3h");
+        } catch (Exception e) {
+        }
+
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

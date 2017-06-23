@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -73,12 +72,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void help(){
+    private void help() {
         HelpFragment fragment = new HelpFragment();
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(fragment.getClass().getName())
                 .add(R.id.container, fragment)
                 .commit();
+
     }
 
 
@@ -99,9 +99,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        Log.d("count", "..." + count);
         if (count <= 1) {
-            super.onBackPressed();
+            finish();
         } else {
             getSupportFragmentManager().popBackStack();
         }
