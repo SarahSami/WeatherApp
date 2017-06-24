@@ -16,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.app.weather.data.DatabaseHelper;
-import com.app.weather.util.Util;
 import com.app.weatherapp.R;
 
 /**
@@ -51,6 +50,18 @@ public class SettingsFragment extends Fragment {
         RadioButton imperialButton = (RadioButton) v.findViewById(R.id.imperial);
         RadioButton arabicButton = (RadioButton) v.findViewById(R.id.arabic);
         RadioButton englishButton = (RadioButton) v.findViewById(R.id.english);
+
+        String unitKey = sharedPreferences.getString(UNIT_KEY, "");
+        if (unitKey.equals(UNIT_METRIC_KEY))
+            metricButton.setChecked(true);
+        else
+            imperialButton.setChecked(true);
+
+        String languageKey = sharedPreferences.getString(LANGUAGE_KEY, "");
+        if (languageKey.equals(LANGUAGE_ARABIC_KEY))
+            arabicButton.setChecked(true);
+        else
+            englishButton.setChecked(true);
 
         metricButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,17 +106,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        String unitKey = sharedPreferences.getString(UNIT_KEY, "");
-        if (unitKey.equals(UNIT_METRIC_KEY))
-            metricButton.setChecked(true);
-        else
-            imperialButton.setChecked(true);
 
-        String languageKey = sharedPreferences.getString(LANGUAGE_KEY, "");
-        if (languageKey.equals(LANGUAGE_ARABIC_KEY))
-            arabicButton.setChecked(true);
-        else
-            englishButton.setChecked(true);
 
         return v;
     }
@@ -123,12 +124,17 @@ public class SettingsFragment extends Fragment {
 
     private void changeLanguage(String language) {
         sharedPreferences.edit().putString(LANGUAGE_KEY, language).commit();
-        Util.loadLanguage(getContext());
+        resetApp();
     }
 
     private void changeUnitSystem(String unit) {
         sharedPreferences.edit().putString(UNIT_KEY, unit).commit();
 
+    }
+
+    private void resetApp() {
+        getActivity().finish();
+        getActivity().startActivity(new Intent(getContext(), MainActivity.class));
     }
 
     private void removeAllCitiesPermission() {
