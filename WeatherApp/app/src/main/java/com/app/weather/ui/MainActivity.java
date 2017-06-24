@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.help:
                 help();
                 break;
+            case R.id.settings:
+                settings();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -81,18 +85,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void settings() {
+        SettingsFragment fragment = new SettingsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(fragment.getClass().getName())
+                .add(R.id.container, fragment)
+                .commit();
+
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         selectCityBroadcastReceiver = new SelectCityBroadcastReceiver();
-        registerReceiver(selectCityBroadcastReceiver, new IntentFilter(CityAdapter.START_FRAGMENT_CITY_INTENT_ACTION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(selectCityBroadcastReceiver, new IntentFilter(CityAdapter.START_FRAGMENT_CITY_INTENT_ACTION));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(selectCityBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(selectCityBroadcastReceiver);
     }
 
 

@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="16dp"
+            android:padding="@dimen/default_padding"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textColor="@color/white"
             android:textStyle="bold" />
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/default_padding"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@color/white" />
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="@dimen/default_padding">
 
             <TextView
                 android:id="@+id/description"
@@ -116,7 +116,7 @@
             android:id="@+id/forecast_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/default_padding"
             android:orientation="vertical" />
     </LinearLayout>
 </ScrollView>

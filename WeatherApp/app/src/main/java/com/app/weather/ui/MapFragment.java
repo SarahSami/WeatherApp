@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ public class MapFragment extends Fragment {
 
 
     private GoogleMap googleMap;
-    private MarkerOptions marker;
+    private Marker marker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,10 +81,14 @@ public class MapFragment extends Fragment {
                     @Override
                     public void onMapClick(LatLng latLng) {
 
-                        marker = new MarkerOptions().position(
-                                latLng);
+                        if (marker == null) {
+                            MarkerOptions markerOptions = new MarkerOptions().position(
+                                    latLng);
+                            marker = googleMap.addMarker(markerOptions);
 
-                        googleMap.addMarker(marker);
+                        } else
+                            marker.setPosition(latLng);
+
                     }
                 });
 
@@ -90,6 +96,7 @@ public class MapFragment extends Fragment {
             }
         });
 
+        Toast.makeText(getContext(), getString(R.string.click_map_add_city), Toast.LENGTH_SHORT).show();
         return v;
     }
 
@@ -113,9 +120,9 @@ public class MapFragment extends Fragment {
                     city.setName(cityName);
                     DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
                     db.addCity(city);
-                    Toast.makeText(getActivity(), city.getName() + "," + city.getCountry() + " added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), city.getName() + "," + city.getCountry() + " " + getString(R.string.added), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION);
-                    getContext().sendBroadcast(intent);
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
                     finishFragment();
                 }
@@ -135,6 +142,7 @@ public class MapFragment extends Fragment {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.remove(this);
+        fm.popBackStack();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }

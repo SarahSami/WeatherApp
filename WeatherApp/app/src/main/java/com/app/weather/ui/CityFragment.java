@@ -1,10 +1,11 @@
 package com.app.weather.ui;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class CityFragment extends Fragment {
     private List<Forecast> forecastList;
     private APIClient apiClient;
     private ImageView iconView;
+    private String unit;
     private LinearLayout forecastLayoutView;
     private TextView cityNameTextView, countryTextView, tempTextView, descriptionTextView, humidityTextView, windTextView;
 
@@ -64,13 +66,20 @@ public class CityFragment extends Fragment {
         forecastList = new ArrayList<>();
         loadWeatherData();
         loadNextDaysWeatherData();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String unitKey = sharedPreferences.getString(SettingsFragment.UNIT_KEY, "");
+        if (unitKey.equals(SettingsFragment.UNIT_METRIC_KEY))
+            unit = "˚C";
+        else
+            unit = "˚F";
         return v;
     }
 
     private void setUIValues() {
         cityNameTextView.setText(city.getName());
         countryTextView.setText(city.getCountry());
-        tempTextView.setText(forecast.getTemp() + "˚C");
+        tempTextView.setText(forecast.getTemp() + unit);
         descriptionTextView.setText(forecast.getDescription());
         humidityTextView.setText(forecast.getHumidity() + "%");
         windTextView.setText(forecast.getWindSpeed() + "m/s");
@@ -100,7 +109,8 @@ public class CityFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void result) {
-                pd.dismiss();
+                if (pd != null && pd.isShowing())
+                    pd.dismiss();
                 if (response != null) {
                     forecast = new Forecast();
                     forecast.parseJSONObject(response);
@@ -137,7 +147,6 @@ public class CityFragment extends Fragment {
                         Forecast forecast = new Forecast();
                         try {
                             forecast.parseJSONObject(response.getJSONObject(i));
-                            Log.d("date", "..." + forecast.getDate());
                             forecastList.add(forecast);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,7 +179,7 @@ public class CityFragment extends Fragment {
 
             dayView.setText(getDayName(forecast.getDate()));
             dateView.setText(formatDate(forecast.getDate()));
-            tempView.setText(forecast.getTemp() + "˚C");
+            tempView.setText(forecast.getTemp() + unit);
             descriptionView.setText(forecast.getDescription());
             humidityView.setText(forecast.getHumidity() + "%");
             windView.setText(forecast.getWindSpeed() + "m/s");
@@ -183,7 +192,7 @@ public class CityFragment extends Fragment {
 
     }
 
-    private String getDayName(String day){
+    private String getDayName(String day) {
         SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
@@ -196,7 +205,7 @@ public class CityFragment extends Fragment {
         return "";
     }
 
-    private String formatDate(String day){
+    private String formatDate(String day) {
         SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
@@ -204,7 +213,7 @@ public class CityFragment extends Fragment {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
             SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
 
-            return dayFormat.format(date)+"/"+monthFormat.format(date);
+            return dayFormat.format(date) + "/" + monthFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

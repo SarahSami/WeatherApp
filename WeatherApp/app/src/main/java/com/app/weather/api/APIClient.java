@@ -1,8 +1,10 @@
 package com.app.weather.api;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.app.weather.ui.SettingsFragment;
 import com.app.weatherapp.R;
 
 import org.json.JSONArray;
@@ -21,18 +23,24 @@ public class APIClient {
 
 
     private Context context;
+    private String unit;
 
     public APIClient(Context context) {
         this.context = context;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, "");
     }
 
     public JSONObject getWeatherData(double lat, double lng) {
-        String url = APIUrl.CITY_WEATHER_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng;
+        String url = APIUrl.CITY_WEATHER_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng
+                + "&units=" + unit;
+
         return getJSONObject(url);
     }
 
     public JSONArray getNextDaysWeatherData(double lat, double lng) {
-        String url = APIUrl.CITY_FORECAST_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng;
+        String url = APIUrl.CITY_FORECAST_URL + context.getString(R.string.open_weather_map_id) + "&lat=" + lat + "&lon=" + lng
+                + "&units=" + unit;
         JSONObject jsonObject = getJSONObject(url);
         if (jsonObject != null) {
             try {
@@ -47,7 +55,6 @@ public class APIClient {
     private JSONObject getJSONObject(String baseUrl) {
         try {
             URL url = new URL(baseUrl);
-            Log.d("url is", ".." + url.toString());
             HttpURLConnection connection =
                     (HttpURLConnection) url.openConnection();
 

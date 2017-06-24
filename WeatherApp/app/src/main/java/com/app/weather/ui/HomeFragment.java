@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.app.weather.adapter.CityAdapter;
 import com.app.weather.data.DatabaseHelper;
@@ -26,6 +28,7 @@ public class HomeFragment extends Fragment {
     private DatabaseHelper database;
     private CityAdapter mAdapter;
     private  RecyclerView mRecyclerView;
+    private TextView emptyListViewMsg;
     private UpdateCitiesListBroadcastReceiver updateCitiesListBroadcastReceiver;
     public static final String UPDATE_CITIES_LIST_INTENT_ACTION = "update.cities.list.action";
 
@@ -43,7 +46,7 @@ public class HomeFragment extends Fragment {
         database = DatabaseHelper.getInstance(getContext());
         mAdapter = new CityAdapter(getContext(), database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
-
+        emptyListViewMsg = (TextView) v.findViewById(R.id.add_new_city);
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,26 +59,34 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
-
+        checkEmptyList();
         return v;
     }
 
+    private void checkEmptyList(){
+        if(mAdapter.getItemCount() == 0){
+            emptyListViewMsg.setVisibility(View.VISIBLE);
+        }else{
+            emptyListViewMsg.setVisibility(View.GONE);
+        }
+    }
     private void updateCities(){
         mAdapter = new CityAdapter(getContext(), database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
+        checkEmptyList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         updateCitiesListBroadcastReceiver = new UpdateCitiesListBroadcastReceiver();
-        getActivity().registerReceiver(updateCitiesListBroadcastReceiver, new IntentFilter(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateCitiesListBroadcastReceiver, new IntentFilter(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(updateCitiesListBroadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateCitiesListBroadcastReceiver);
     }
 
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,7 +65,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
                 Intent intent = new Intent(START_FRAGMENT_CITY_INTENT_ACTION);
                 Gson gson = new Gson();
                 intent.putExtra("city", gson.toJson(cities.get(position)));
-                mContext.sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
             }
         });
@@ -104,7 +105,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         DatabaseHelper db = DatabaseHelper.getInstance(mContext);
         db.removeCity(city.getName());
         Intent intent = new Intent(HomeFragment.UPDATE_CITIES_LIST_INTENT_ACTION);
-        mContext.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     @Override
