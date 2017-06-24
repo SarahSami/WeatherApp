@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.app.weather.data.DatabaseHelper;
+import com.app.weather.util.Util;
 import com.app.weatherapp.R;
 
 /**
@@ -100,7 +101,7 @@ public class SettingsFragment extends Fragment {
         else
             imperialButton.setChecked(true);
 
-        String languageKey = sharedPreferences.getString(UNIT_KEY, "");
+        String languageKey = sharedPreferences.getString(LANGUAGE_KEY, "");
         if (languageKey.equals(LANGUAGE_ARABIC_KEY))
             arabicButton.setChecked(true);
         else
@@ -122,6 +123,7 @@ public class SettingsFragment extends Fragment {
 
     private void changeLanguage(String language) {
         sharedPreferences.edit().putString(LANGUAGE_KEY, language).commit();
+        Util.loadLanguage(getContext());
     }
 
     private void changeUnitSystem(String unit) {

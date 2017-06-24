@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="app_name">Weather</string>
+    <string name="add_city">اضف مدينة </string>
+    <string name="delete_city">هل تريد مسح هذه المدينة؟</string>
+    <string name="delete_all_cities">هل تريد مسح كل المدن؟</string>
+    <string name="delete_all">مسح كل المدن</string>
+    <string name="system_unit">اختيار الوحده</string>
+    <string name="metric">نظام متري</string>
+    <string name="imperial">نظام انجليزي </string>
+    <string name="choose_language">اختيار اللغة </string>
+    <string name="email_us">لديك سؤال او اقتراح؟اتصل بنا</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
+    <string name="yes">نعم</string>
+    <string name="remove">مسح</string>
+    <string name="cancel">الغاء</string>
+    <string name="done">تم</string>
+    <string name="help">مساعده</string>
+    <string name="settings">الاعدادات</string>
+    <string name="added">اضافه</string>
+    <string name="add_new_city">اضف مدينه جديده اولا</string>
+    <string name="click_map_add_city">اضغط علي الخريطه لاضافه مكان</string>
+    <string name="humidity">الضباب</string>
+    <string name="wind">الرياح</string>
+    <string name="please_wait">انتظر قليلا </string>
+    <string name="problem_internet_connection">يوجد مشكله باتصال الانترنت</string>
+    <string name="no_location_found">عفوا لم يتم تحديد مكان</string>
+    <string name="open_weather_map_id">c6e381d8c7ff98f0fee43775817cf6ad</string>
+    <string name="google_maps_api_key">AIzaSyCqRRgYesnL7FLNpOyidATpWNCi6ov-CMg</string>
+
+
+</resources>

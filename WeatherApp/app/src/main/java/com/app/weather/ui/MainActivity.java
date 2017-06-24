@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.app.weather.adapter.CityAdapter;
 import com.app.weather.data.DatabaseHelper;
+import com.app.weather.util.Util;
 import com.app.weatherapp.R;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Util.loadLanguage(this);
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         try {
             db.createDataBase();
