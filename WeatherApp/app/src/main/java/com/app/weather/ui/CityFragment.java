@@ -4,17 +4,15 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.weather.adapter.ForecastAdapter;
 import com.app.weather.api.APIClient;
 import com.app.weather.models.City;
 import com.app.weather.models.Forecast;
@@ -26,7 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class CityFragment extends Fragment {
     private List<Forecast> forecastList;
     private APIClient apiClient;
     private ImageView iconView;
-    private RecyclerView mRecyclerView;
+    private LinearLayout forecastLayoutView;
     private TextView cityNameTextView, countryTextView, tempTextView, descriptionTextView, humidityTextView, windTextView;
 
     @Override
@@ -59,7 +60,7 @@ public class CityFragment extends Fragment {
         humidityTextView = (TextView) v.findViewById(R.id.humidity);
         windTextView = (TextView) v.findViewById(R.id.wind);
         iconView = (ImageView) v.findViewById(R.id.icon);
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        forecastLayoutView = (LinearLayout) v.findViewById(R.id.forecast_list);
         forecastList = new ArrayList<>();
         loadWeatherData();
         loadNextDaysWeatherData();
@@ -153,10 +154,60 @@ public class CityFragment extends Fragment {
     }
 
     private void loadForecastData() {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ForecastAdapter adapter = new ForecastAdapter(getContext(), forecastList);
-        mRecyclerView.setAdapter(adapter);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (int i = 0; i < forecastList.size(); i++) {
+            Forecast forecast = forecastList.get(i);
+            View itemView = inflater.inflate(R.layout.list_item_forecast, forecastLayoutView, false);
+
+            TextView dayView = (TextView) itemView.findViewById(R.id.day);
+            TextView dateView = (TextView) itemView.findViewById(R.id.date);
+            TextView tempView = (TextView) itemView.findViewById(R.id.temp);
+            TextView descriptionView = (TextView) itemView.findViewById(R.id.description);
+            TextView humidityView = (TextView) itemView.findViewById(R.id.humidity);
+            TextView windView = (TextView) itemView.findViewById(R.id.wind);
+            ImageView iconView = (ImageView) itemView.findViewById(R.id.icon);
+
+            dayView.setText(getDayName(forecast.getDate()));
+            dateView.setText(formatDate(forecast.getDate()));
+            tempView.setText(forecast.getTemp() + "˚C");
+            descriptionView.setText(forecast.getDescription());
+            humidityView.setText(forecast.getHumidity() + "%");
+            windView.setText(forecast.getWindSpeed() + "m/s");
+            ImageLoader imageLoader = new ImageLoader();
+            imageLoader.downloadImage(iconView, forecast.getIcon());
+            forecastLayoutView.addView(itemView);
+
+        }
+
+
+    }
+
+    private String getDayName(String day){
+        SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = inFormat.parse(day);
+            SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+            return outFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private String formatDate(String day){
+        SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = inFormat.parse(day);
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+
+            return dayFormat.format(date)+"/"+monthFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
