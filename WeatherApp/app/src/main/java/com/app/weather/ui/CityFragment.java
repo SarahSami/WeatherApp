@@ -143,6 +143,8 @@ public class CityFragment extends Fragment {
             @Override
             protected void onPostExecute(Void result) {
                 if (response != null) {
+                    //api return 8 weather data for each data so we get one only
+                    //skip the first day weather data as we have it already updated in realtime
                     for (int i = 11; i < response.length(); i = i + 8) {
                         Forecast forecast = new Forecast();
                         try {
@@ -162,6 +164,9 @@ public class CityFragment extends Fragment {
         task.execute((Void[]) null);
     }
 
+    /*
+    * load 5-days forecast data and add each view to linear layout so that we can handle scroll
+    * */
     private void loadForecastData() {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());

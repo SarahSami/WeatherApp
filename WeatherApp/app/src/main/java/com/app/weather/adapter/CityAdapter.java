@@ -20,6 +20,10 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+/*
+* adapter for cities list in home screen
+* */
+
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     public static final String START_FRAGMENT_CITY_INTENT_ACTION = "start.fragment.city.action";
     private List<City> cities;
@@ -79,6 +83,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     }
 
+    /*
+    * show dialog for delete confirmation from user
+    * */
     private void removeCityPermission(final City selectedCity) {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
                 mContext);
@@ -101,6 +108,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         myAlertDialog.show();
     }
 
+    /*
+    * remove city from database then send broadcast to
+    * update cities list in home screen
+    * */
     private void removeCity(City city) {
         DatabaseHelper db = DatabaseHelper.getInstance(mContext);
         db.removeCity(city.getName());

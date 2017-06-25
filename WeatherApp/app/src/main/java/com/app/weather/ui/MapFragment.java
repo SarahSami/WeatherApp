@@ -100,6 +100,9 @@ public class MapFragment extends Fragment {
         return v;
     }
 
+    /*
+    * get city and country name from lat,lng and add it to database
+    * */
     private void addCity() {
         if (marker != null) {
             LatLng location = marker.getPosition();

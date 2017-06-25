@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     private SelectCityBroadcastReceiver selectCityBroadcastReceiver;
 
+    /*
+    * load app language and create database if not exists
+    * show home fragment
+    * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*
+    * onback press close current fragment if open or close app
+    * */
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();

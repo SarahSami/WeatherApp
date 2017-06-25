@@ -51,9 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
-        if (dbExist) {
-            // do nothing - database already exist
-        } else {
+        if (!dbExist) {
             this.getWritableDatabase();
             try {
                 copyDataBase();
@@ -161,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void removeCity(String cityName) {
         SQLiteDatabase db;
         db = this.getWritableDatabase();
-        db.delete("CitiesTBL", "Name='" + cityName+"'", null);
+        db.delete("CitiesTBL", "Name='" + cityName + "'", null);
         db.close();
     }
 

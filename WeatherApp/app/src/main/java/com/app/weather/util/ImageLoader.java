@@ -17,6 +17,10 @@ public class ImageLoader {
 
     }
 
+    /*
+    * load image in background using iconId returned from
+    * json object of weather and set it to imageview
+    * */
     public void downloadImage(final ImageView imageView, final String iconId) {
         AsyncTask task = new AsyncTask<Void, Void, Void>() {
 

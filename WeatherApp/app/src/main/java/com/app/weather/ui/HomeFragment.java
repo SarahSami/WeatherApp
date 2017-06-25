@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
+    //show text hint if no cities in list
     private void checkEmptyList(){
         if(mAdapter.getItemCount() == 0){
             emptyListViewMsg.setVisibility(View.VISIBLE);
@@ -70,12 +71,15 @@ public class HomeFragment extends Fragment {
             emptyListViewMsg.setVisibility(View.GONE);
         }
     }
+
+    //update cities and check if we should display hint
     private void updateCities(){
         mAdapter = new CityAdapter(getContext(), database.getAllCities());
         mRecyclerView.setAdapter(mAdapter);
         checkEmptyList();
     }
 
+    //use local broadcast receiver to update cities list
     @Override
     public void onResume() {
         super.onResume();
